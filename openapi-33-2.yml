@@ -1,0 +1,3059 @@
+openapi: 3.0.1
+info:
+  title: AMPLIFY Transfer CFT API v1.2
+  description: ""
+  contact:
+    email: support@axway.com
+  license:
+    name: Copyright Axway 2018. All rights reserved.
+  version: 1.1.2
+servers:
+- url: https://ansible-dev.local.be/cft/api/v1
+tags:
+- name: transfers
+  description: Manages transfers.
+- name: logs
+  description: Provides methods for querying Transfer CFT logs.
+- name: objects
+  description: Manages Transfer CFT object definitions <b>(experimental)</b>.
+- name: about
+  description: Provides server information.
+paths:
+  /about:
+    get:
+      tags:
+      - about
+      summary: Get the version of AMPLIFY Transfer CFT
+      description: Get the version of AMPLIFY Transfer CFT
+      responses:
+        200:
+          description: Informations about AMPLIFY Transfer CFT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                    description: the version of CFT
+                  level:
+                    type: string
+                    description: the level of CFT, SP and patch
+                  system:
+                    type: string
+                    description: System running CFT
+                  server_time:
+                    type: string
+                    description: Local time on CFT server
+                  server_utc:
+                    type: string
+                    description: UTC Timezone on CFT server
+                  multinode_enabled:
+                    type: string
+                    description: CFT is in mutinode mode
+                  cg_enabled:
+                    type: string
+                    description: CFT is controlled by CG
+                  instance_id:
+                    type: string
+                    description: The instance ID of CFT
+                example:
+                  version: 3.3.2
+                  level: ""
+                  system: unix
+                  server_time: "1526301034000"
+                  server_utc: "2"
+                  multinode_enabled: NO
+                  cg_enabled: NO
+                  instance_id: workstationaddress
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized - Incorrect credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: Unauthorized - The requester does not have sufficient rights.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - basicAuth: []
+  /objects/cftsend:
+    get:
+      tags:
+      - objects
+      summary: Retrieves the list of cftsend (experimental).
+      description: |-
+        <p>
+          Retrieves the list of cftsend objects.
+          <br>
+          numberOfSelectedRecords Specifies the number of cftsend objects corresponding to the selection.
+          <br>
+          numberOfRecords Specifies the number of cftsend objects currently defined.
+         <br><b>Experimental</b> This feature is present as indication only and may change in future version.
+         <br><b>Since</b> CFT V3.3.2
+        </p>
+      parameters:
+      - name: offset
+        in: query
+        description: Number of objects to skip.
+        schema:
+          type: integer
+          default: 0
+      - name: limit
+        in: query
+        description: Maximum number of objects to return.
+        schema:
+          type: integer
+          default: 100
+      responses:
+        200:
+          description: A list of cftsend objects
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cftsend:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ObjectCftsendDetailsList'
+                  numberOfSelectedRecords:
+                    $ref: '#/components/schemas/numberSelectedRecords'
+                  numberOfRecords:
+                    $ref: '#/components/schemas/numberRecords'
+                  offset:
+                    $ref: '#/components/schemas/offsetRecords'
+                example:
+                  cftsend:
+                  - id: BIN
+                  - id: TXT
+                  numberOfSelectedRecords: 2
+                  numberOfRecords: 2
+                  offset: 0
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized - Incorrect credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: Unauthorized - The requester does not have sufficient rights.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - basicAuth: []
+  /objects/cftrecv:
+    get:
+      tags:
+      - objects
+      summary: Retrieves the list of cftrecv (experimental).
+      description: |-
+        <p>
+          Retrieves the list of cftrecv objects.
+          <br>
+          numberOfSelectedRecords Specifies the number of cftrecv objects corresponding to the selection.
+          <br>
+          numberOfRecords Specifies the number of cftrecv objects currently defined.
+         <br><b>Experimental</b> This feature is present as indication only and may change in future version.
+         <br><b>Since</b> CFT V3.3.2
+        </p>
+      parameters:
+      - name: offset
+        in: query
+        description: Number of objects to skip.
+        schema:
+          type: integer
+          default: 0
+      - name: limit
+        in: query
+        description: Maximum number of objects to return.
+        schema:
+          type: integer
+          default: 100
+      responses:
+        200:
+          description: A list of cftrecv objects
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cftrecv:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ObjectCftrecvDetailsList'
+                  numberOfSelectedRecords:
+                    $ref: '#/components/schemas/numberSelectedRecords'
+                  numberOfRecords:
+                    $ref: '#/components/schemas/numberRecords'
+                  offset:
+                    $ref: '#/components/schemas/offsetRecords'
+                example:
+                  cftrecv:
+                  - id: BIN
+                  - id: TXT
+                  numberOfSelectedRecords: 2
+                  numberOfRecords: 2
+                  offset: 0
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized - Incorrect credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: Unauthorized - The requester does not have sufficient rights.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - basicAuth: []
+  /objects/cftpart:
+    get:
+      tags:
+      - objects
+      summary: Retrieves the list of partners (experimental).
+      description: |-
+        <p>
+          Retrieves a list of partners (cftpart objects).
+          <br>
+          numberOfSelectedRecords Specifies the number of cftpart objects corresponding to the selection.
+          <br>
+          numberOfRecords Specifies the number of cftpart objects currently defined.
+         <br><b>Experimental</b> This feature is present as indication only and may change in future version.
+         <br><b>Since</b> CFT V3.3.2
+        </p>
+      parameters:
+      - name: offset
+        in: query
+        description: Number of objects to skip.
+        schema:
+          type: integer
+          default: 0
+      - name: limit
+        in: query
+        description: Maximum number of objects to return.
+        schema:
+          type: integer
+          default: 100
+      responses:
+        200:
+          description: A list of partners
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cftpart:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ObjectCftpartDetailsList'
+                  numberOfSelectedRecords:
+                    $ref: '#/components/schemas/numberSelectedRecords'
+                  numberOfRecords:
+                    $ref: '#/components/schemas/numberRecords'
+                  offset:
+                    $ref: '#/components/schemas/offsetRecords'
+                example:
+                  cftpart:
+                  - id: PARIS
+                  - id: NEWYORK
+                  numberOfSelectedRecords: 2
+                  numberOfRecords: 2
+                  offset: 0
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized - Incorrect credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: Unauthorized - The requester does not have sufficient rights.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - basicAuth: []
+  /objects/cftdest:
+    get:
+      tags:
+      - objects
+      summary: Retrieves the list of cftdest (experimental).
+      description: |-
+        <p>
+          Retrieves a list of broadcast lists (cftdest objects).
+          <br>
+          numberOfSelectedRecords Specifies the number of cftdest objects corresponding to the selection.
+          <br>
+          numberOfRecords Specifies the number of cftdest objects currently defined.
+          <br>
+          <br><b>Experimental</b> This feature is present as indication only and may change in future version.
+          <br><b>Since</b> CFT V3.3.2 SP2
+        </p>
+      parameters:
+      - name: offset
+        in: query
+        description: Number of objects to skip.
+        schema:
+          type: integer
+          default: 0
+      - name: limit
+        in: query
+        description: Maximum number of objects to return.
+        schema:
+          type: integer
+          default: 100
+      responses:
+        200:
+          description: A list of dest
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cftdest:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ObjectCftdestDetailsList'
+                  numberOfSelectedRecords:
+                    $ref: '#/components/schemas/numberSelectedRecords'
+                  numberOfRecords:
+                    $ref: '#/components/schemas/numberRecords'
+                  offset:
+                    $ref: '#/components/schemas/offsetRecords'
+                example:
+                  cftdest:
+                  - id: DEST_FRANCE
+                  - id: DEST_CALIFORNIA
+                  numberOfSelectedRecords: 2
+                  numberOfRecords: 2
+                  offset: 0
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized - Incorrect credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: Unauthorized - The requester does not have sufficient rights.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - basicAuth: []
+  /logs:
+    get:
+      tags:
+      - logs
+      summary: Retrieves a list of log messages
+      description: Retrieves a list of log messages
+      parameters:
+      - name: Severity
+        in: query
+        description: Severity of the log to return
+        schema:
+          maxLength: 1
+          type: string
+          enum:
+          - F
+          - E
+          - W
+          - I
+      - name: limit
+        in: query
+        description: Maximum number of lines to display
+        schema:
+          maximum: 10000
+          minimum: 0
+          type: string
+      - name: datetimemin
+        in: query
+        description: Use to display logs that happened on or after this start date
+          and time YYYY-MM-DDThh:mm:ssZ
+        schema:
+          maxLength: 20
+          minLength: 20
+          type: string
+      - name: datetimemax
+        in: query
+        description: Use to display logs that happened on or before this end date
+          and time YYYY-MM-DDThh:mm:ssZ
+        schema:
+          maxLength: 20
+          minLength: 20
+          type: string
+      - name: pattern
+        in: query
+        description: Only displays the log lines that match this specific pattern
+          ; enter any pattern with a maximum of 63 characters
+        schema:
+          maxLength: 63
+          type: string
+      responses:
+        200:
+          description: A list of log messages
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  logs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        node:
+                          type: string
+                          description: the cft node
+                        severity:
+                          type: string
+                          description: message severity
+                        code:
+                          type: string
+                          description: message code
+                        date:
+                          type: string
+                          description: message type
+                        message:
+                          type: string
+                          description: the message
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized - Incorrect credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: Unauthorized - The requester does not have sufficient rights.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - basicAuth: []
+  /transfers:
+    get:
+      tags:
+      - transfers
+      summary: Retrieves a list of transfers
+      description: |-
+        <p>
+          Retrieves a list of transfers.
+          <br>
+          If no fields are given in the request, the default value for the field is still sent by the server.
+          <br>
+          numberOfSelectedRecords count specifies the number of transfers corresponding to the selection.
+          <br>
+          numberOfUsedRecords count specifies the number of transfers currently present in the catalog.
+          <br>
+          The model below represents the response when the default fields are selected. Any field which appears in the get/idtu response can be selected.
+        </p>
+      parameters:
+      - name: ida
+        in: query
+        description: Transfer-related identifier.
+        schema:
+          maxLength: 64
+          type: string
+      - name: idtu
+        in: query
+        description: Transfer ID.
+        schema:
+          maxLength: 8
+          minLength: 8
+          pattern: '[A-Z][0-9]{7}'
+          type: string
+      - name: idt
+        in: query
+        description: Protocol transfer ID.
+        schema:
+          maxLength: 8
+          minLength: 8
+          pattern: '[A-Z][0-9]{7}'
+          type: string
+      - name: nidt
+        in: query
+        description: Network protocol transfer ID.
+        schema:
+          maxLength: 8
+          minLength: 8
+          pattern: '[A-Z][0-9]{7}'
+          type: string
+      - name: part
+        in: query
+        description: Partner associated with the transfer.
+        schema:
+          maxLength: 32
+          type: string
+      - name: idf
+        in: query
+        description: Flow ID.
+        schema:
+          maxLength: 32
+          type: string
+      - name: phase
+        in: query
+        description: Transfer phase.
+        schema:
+          maxLength: 1
+          minLength: 1
+          type: string
+          enum:
+          - A
+          - T
+          - Y
+          - Z
+          - X
+      - name: phasestep
+        in: query
+        description: Transfer phasestep.
+        schema:
+          maxLength: 1
+          minLength: 1
+          type: string
+          enum:
+          - D
+          - C
+          - E
+          - K
+          - H
+          - X
+      - name: fields
+        in: query
+        description: List of fields to return.
+        schema:
+          maxLength: 256
+          type: string
+          default: PART,DIRECT,TYPE,COMPATSTATE,ACK,STATE,PHASE,PHASESTEP,IDF,IDT,IDTU,PIDTU,NREC,FREC,MSG,DIAGI,DIAGP,REQUSER,REQGROUP,IDA
+      - name: offset
+        in: query
+        description: Catalog offset.
+        schema:
+          type: integer
+          default: 0
+      - name: limit
+        in: query
+        description: Maximum number of transfers to return.
+        schema:
+          type: integer
+          default: 100
+      responses:
+        200:
+          description: List of transfers.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transfers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TransferDetailsList'
+                  numberOfSelectedRecords:
+                    type: integer
+                    description: Number of selected catalog records.
+                  numberOfUsedRecords:
+                    type: integer
+                    description: Number of used records in the catalog file.
+                  numberOfRecords:
+                    type: integer
+                    description: Total number of records in the catalog file.
+                  offset:
+                    type: integer
+                    description: Catalog offset integer.
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized - Incorrect credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: Unauthorized - The requester does not have sufficient rights.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - basicAuth: []
+  /transfers/{idtu}:
+    get:
+      tags:
+      - transfers
+      summary: Retrieves a given transfer
+      description: Retrieves a given transfer.
+      parameters:
+      - name: idtu
+        in: path
+        description: Unique transfer identifier.
+        required: true
+        schema:
+          maxLength: 8
+          minLength: 8
+          pattern: '[A-Z][0-9]{7}'
+          type: string
+      responses:
+        200:
+          description: Transfer details upon successful query.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferDetails'
+        401:
+          description: Unauthorized - Incorrect credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: Unauthorized - The requester does not have sufficient rights.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Transfer not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - basicAuth: []
+    delete:
+      tags:
+      - transfers
+      summary: Deletes a given transfer
+      description: Deletes a given transfer.
+      parameters:
+      - name: idtu
+        in: path
+        description: Unique transfer identifier.
+        required: true
+        schema:
+          maxLength: 8
+          minLength: 8
+          pattern: '[A-Z][0-9]{7}'
+          type: string
+      responses:
+        200:
+          description: Successfully deleted the transfer.
+          content: {}
+        202:
+          description: The command was accepted, but not executed.
+          content: {}
+        401:
+          description: Unauthorized - Incorrect credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: Unauthorized - The requester does not have sufficient rights.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Transfer not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - basicAuth: []
+  /transfers/{idtu}/halt:
+    put:
+      tags:
+      - transfers
+      summary: Interrupts a given transfer
+      description: Interrupts a given transfer. The interrupted transfer is set to
+        H phasestep.
+      parameters:
+      - name: idtu
+        in: path
+        description: Unique transfer identifier.
+        required: true
+        schema:
+          maxLength: 8
+          minLength: 8
+          pattern: '[A-Z][0-9]{7}'
+          type: string
+      responses:
+        200:
+          description: Transfer interrupted.
+          content: {}
+        202:
+          description: The command was accepted, but not executed.
+          content: {}
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized - Incorrect credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: Unauthorized - The requester does not have sufficient rights.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Transfer not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - basicAuth: []
+  /transfers/{idtu}/keep:
+    put:
+      tags:
+      - transfers
+      summary: Suspends a given transfer
+      description: Suspends a given transfer. The suspended transfer is set to K phasestep.
+      parameters:
+      - name: idtu
+        in: path
+        description: Unique transfer identifier.
+        required: true
+        schema:
+          maxLength: 8
+          minLength: 8
+          pattern: '[A-Z][0-9]{7}'
+          type: string
+      responses:
+        200:
+          description: Transfer suspended.
+          content: {}
+        202:
+          description: The command was accepted, but not executed
+          content: {}
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized - Incorrect credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: Unauthorized - The requester does not have sufficient rights.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Transfer not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - basicAuth: []
+  /transfers/{idtu}/start:
+    put:
+      tags:
+      - transfers
+      summary: Restarts a given transfer
+      description: Restarts a given transfer. Transfers in the H or K phasestep in
+        the catalog change to the D phasestep after this command is executed.
+      parameters:
+      - name: idtu
+        in: path
+        description: Unique transfer identifier.
+        required: true
+        schema:
+          maxLength: 8
+          minLength: 8
+          pattern: '[A-Z][0-9]{7}'
+          type: string
+      responses:
+        200:
+          description: Transfer restarted.
+          content: {}
+        202:
+          description: The command was accepted, but not executed.
+          content: {}
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized - Incorrect credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: Unauthorized - The requester does not have sufficient rights.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Transfer not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - basicAuth: []
+  /transfers/{idtu}/resume:
+    put:
+      tags:
+      - transfers
+      summary: Resumes a given transfer
+      description: Resumes a given transfer. This command retrieves, in server mode,
+        a blocked send request that has a hold phasestep, and has a diagnostic codes
+        other than zero.
+      parameters:
+      - name: idtu
+        in: path
+        description: Unique transfer identifier.
+        required: true
+        schema:
+          maxLength: 8
+          minLength: 8
+          pattern: '[A-Z][0-9]{7}'
+          type: string
+      responses:
+        200:
+          description: Resumed transfer.
+          content: {}
+        202:
+          description: The command was accepted, but not executed.
+          content: {}
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized - Incorrect credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: Unauthorized - The requester does not have sufficient rights.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Transfer not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - basicAuth: []
+  /transfers/{idtu}/submit:
+    put:
+      tags:
+      - transfers
+      summary: Submits a processing procedure for a given transfer
+      description: Submits a processing procedure for a given transfer. <br> You can
+        start, or restart, this procedure when the file or message transfer is in
+        the T phasestep. <br> This command has no effect on transfers belonging to
+        a broadcasting list, even if these transfers are in the T phasestep. <br>
+        Alternatively, it can be applied to a generic transfer, whose PART parameter
+        equals the broadcasting list identifier, when it is in the T phasestep.
+      parameters:
+      - name: idtu
+        in: path
+        description: Unique transfer identifier.
+        required: true
+        schema:
+          maxLength: 8
+          minLength: 8
+          pattern: '[A-Z][0-9]{7}'
+          type: string
+      responses:
+        200:
+          description: Submitted procedure.
+          content: {}
+        202:
+          description: The command was accepted, but not executed.
+          content: {}
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized - Incorrect credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: Unauthorized - The requester does not have sufficient rights.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Transfer not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - basicAuth: []
+  /transfers/{idtu}/ack:
+    put:
+      tags:
+      - transfers
+      summary: Acknowledges a given transfer
+      description: Acknowledges a given transfer. This command initiates the sending
+        of a positive acknowledgement to the remote partner. <br> You MUST provide
+        the MSG field in the body.
+      parameters:
+      - name: idtu
+        in: path
+        description: Unique transfer identifier.
+        required: true
+        schema:
+          maxLength: 8
+          minLength: 8
+          pattern: '[A-Z][0-9]{7}'
+          type: string
+      - name: idm
+        in: query
+        description: Message identifier.
+        required: true
+        schema:
+          maxLength: 32
+          type: string
+      requestBody:
+        description: Transfer parameters.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferRequestSendReplyBody'
+        required: true
+      responses:
+        200:
+          description: Acknowledged the transfer.
+          content: {}
+        202:
+          description: The command was accepted, but not executed.
+          content: {}
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized - Incorrect credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: Unauthorized - The requester does not have sufficient rights.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Transfer not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - basicAuth: []
+      x-codegen-request-body-name: json
+  /transfers/{idtu}/nack:
+    put:
+      tags:
+      - transfers
+      summary: Acknowledges negatively a given transfer
+      description: Negatively acknowledges a given transfer. This command initiates
+        the sending of a negative acknowledgement to the remote partner. <br> You
+        MUST provide the MSG field in the body.
+      parameters:
+      - name: idtu
+        in: path
+        description: Unique transfer identifier.
+        required: true
+        schema:
+          maxLength: 8
+          minLength: 8
+          pattern: '[A-Z][0-9]{7}'
+          type: string
+      - name: idm
+        in: query
+        description: Message identifier.
+        required: true
+        schema:
+          maxLength: 32
+          type: string
+      requestBody:
+        description: Transfer parameters.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferRequestSendNackBody'
+        required: true
+      responses:
+        200:
+          description: Completed negative acknowledgement.
+          content: {}
+        202:
+          description: The command was accepted, but not executed.
+          content: {}
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized - Incorrect credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: Unauthorized - The requester does not have sufficient rights.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Transfer not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - basicAuth: []
+      x-codegen-request-body-name: json
+  /transfers/{idtu}/end:
+    put:
+      tags:
+      - transfers
+      summary: Ends a given transfer
+      description: Ends a given transfer.
+      parameters:
+      - name: idtu
+        in: path
+        description: Unique transfer identifier.
+        required: true
+        schema:
+          maxLength: 8
+          minLength: 8
+          pattern: '[A-Z][0-9]{7}'
+          type: string
+      requestBody:
+        description: Transfer parameters.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferRequestEndBody'
+        required: false
+      responses:
+        200:
+          description: Ended transfer.
+          content: {}
+        202:
+          description: The command was accepted, but not executed.
+          content: {}
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized - Incorrect credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: Unauthorized - The requester does not have sufficient rights.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Transfer not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - basicAuth: []
+      x-codegen-request-body-name: json
+  /transfers/files/outgoings:
+    post:
+      tags:
+      - transfers
+      summary: Creates a new send file transfer request
+      description: Creates a new send file transfer request <br> If the IDA is not
+        given in the request, it is generated by the server and returned if the operation
+        is successful (code 201) or accepted (code 202).
+      parameters:
+      - name: part
+        in: query
+        description: Partner.
+        required: true
+        schema:
+          maxLength: 32
+          type: string
+      - name: idf
+        in: query
+        description: Flow ID.
+        schema:
+          maxLength: 32
+          type: string
+      - name: apitimeout
+        in: query
+        description: Command timeout.
+        schema:
+          maximum: 120
+          minimum: -1
+          type: integer
+      requestBody:
+        description: Send transfer request parameters.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferRequestSendFileBody'
+        required: false
+      responses:
+        201:
+          description: Return transfer information.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferRequestResult'
+        202:
+          description: Accepted, but processing not complete.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferRequestResult'
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized - Incorrect credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: Unauthorized - The requester does not have sufficient rights.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - basicAuth: []
+      x-codegen-request-body-name: json
+  /transfers/files/incomings:
+    post:
+      tags:
+      - transfers
+      summary: Creates a new receive file transfer request
+      description: Creates a new receive file transfer request. <br> If the IDA is
+        not given in the request, it is generated by the server and returned if operation
+        is successful (code 201) or accepted (code 202).
+      parameters:
+      - name: part
+        in: query
+        description: Partner.
+        required: true
+        schema:
+          maxLength: 32
+          type: string
+      - name: idf
+        in: query
+        description: Flow ID.
+        schema:
+          maxLength: 32
+          type: string
+      - name: apitimeout
+        in: query
+        description: Command timeout.
+        schema:
+          maximum: 120
+          minimum: -1
+          type: integer
+      requestBody:
+        description: Receive transfer request parameters.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferRequestReceiveFileBody'
+        required: false
+      responses:
+        201:
+          description: Transfer details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferRequestResult'
+        202:
+          description: Accepted, but processing not completed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferRequestResult'
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized - Incorrect credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: Unauthorized - The requester does not have sufficient rights.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - basicAuth: []
+      x-codegen-request-body-name: json
+  /transfers/messages:
+    post:
+      tags:
+      - transfers
+      summary: Creates a new message transfer request
+      description: Creates a new message transfer request. <br> If the IDA is not
+        given in the request, it is generated by the server and returned if operation
+        is successful (code 201) or accepted (code 202). <br> You MUST provide the
+        MSG field in the body.
+      parameters:
+      - name: part
+        in: query
+        description: Partner.
+        required: true
+        schema:
+          maxLength: 32
+          type: string
+      - name: idm
+        in: query
+        description: Message ID.
+        required: true
+        schema:
+          maxLength: 32
+          type: string
+      - name: apitimeout
+        in: query
+        description: Command timeout.
+        schema:
+          maximum: 120
+          minimum: -1
+          type: integer
+      requestBody:
+        description: Message transfer request parameters.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferRequestSendMessageBody'
+        required: true
+      responses:
+        201:
+          description: Transfer details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferRequestResult'
+        202:
+          description: Accepted, but processing not completed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferRequestResult'
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized - Incorrect credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: Unauthorized - The requester does not have sufficient rights.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - basicAuth: []
+      x-codegen-request-body-name: json
+components:
+  schemas:
+    TransferRequestResult:
+      type: object
+      properties:
+        partner:
+          type: string
+          description: Remote partner.
+        idf:
+          type: string
+          description: Flow ID.
+        idtu:
+          type: string
+          description: Transfer ID.
+        idt:
+          type: string
+          description: Protocol transfer ID.
+        state:
+          type: string
+          description: Transfer state.
+        phase:
+          type: string
+          description: Transfer phase.
+        phasestep:
+          type: string
+          description: Transfer phasestep.
+        ida:
+          type: string
+          description: Transfer-related identifier.
+        diagi:
+          type: string
+          description: Diagnostic identifier relative to the transfer.
+        diagp:
+          type: string
+          description: Diagnostic identifier relative to the transfer.
+        links:
+          type: object
+          properties:
+            rel:
+              type: string
+              description: Relation between the link and the object. Usually equal
+                to self.
+            href:
+              type: string
+              description: Link to get created-object details.
+    TransferDetailsList:
+      type: object
+      properties:
+        partner:
+          type: string
+          description: Remote partner.
+        direct:
+          type: string
+          description: Transfer direction (send or recv).
+        type:
+          type: string
+          description: Either a file or message.
+        compatstate:
+          type: string
+          description: Transfer state.
+        ack:
+          type: string
+          description: Acknowledgement.
+        state:
+          type: string
+          description: Transfer state.
+        phase:
+          type: string
+          description: Transfer phase.
+        phasestep:
+          type: string
+          description: Transfer phasestep.
+        idf:
+          type: string
+          description: Flow ID.
+        idt:
+          type: string
+          description: Protocol transfer ID.
+        idtu:
+          type: string
+          description: Transfer ID.
+        pidtu:
+          type: string
+          description: Parent transfer ID.
+        nrec:
+          type: string
+          description: Number of records transmitted.
+        frec:
+          type: string
+          description: Number of file records.
+        msg:
+          type: string
+          description: Message.
+        diagi:
+          type: string
+          description: Diagnostic code.
+        diagp:
+          type: string
+          description: Additional diagnostics.
+        requser:
+          type: string
+          description: Requesting user.
+        reqgroup:
+          type: string
+          description: Requesting user group.
+        ida:
+          type: string
+          description: Identifier related to the transfer.
+    ObjectCftpartDetailsList:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Partner identifier.
+    ObjectCftsendDetailsList:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The IDF (file identifier).
+    ObjectCftrecvDetailsList:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The IDF (file identifier).
+    ObjectCftdestDetailsList:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The broadcast list identifier.
+    numberSelectedRecords:
+      type: integer
+      description: Number of selected object records.
+    numberRecords:
+      type: integer
+      description: Number of records of the object type in the parameter file.
+    offsetRecords:
+      type: integer
+      description: Record offset.
+    Error:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+      example:
+        code: 99
+        message: Additional error details.
+    TransferDetails:
+      type: object
+      properties:
+        ack:
+          type: string
+        ackexec:
+          type: string
+        ackmindate:
+          type: string
+        ackmintime:
+          type: string
+        ackstate:
+          type: string
+        acktimeout:
+          type: string
+        appstate:
+          type: string
+        blknum:
+          type: string
+        cftv:
+          type: string
+        chkw:
+          type: string
+        comment:
+          type: string
+        commut:
+          type: string
+        commutrva:
+          type: string
+        compatstate:
+          type: string
+        comprate:
+          type: string
+        cos:
+          type: string
+        counterr:
+          type: string
+        cycdate:
+          type: string
+        cycle:
+          type: string
+        cyctime:
+          type: string
+        dateb:
+          type: string
+        dated:
+          type: string
+        datee:
+          type: string
+        datek:
+          type: string
+        delete:
+          type: string
+        dest:
+          type: string
+        destexec:
+          type: string
+        destexeca:
+          type: string
+        destexecpre:
+          type: string
+        diagc:
+          type: string
+        diagi:
+          type: string
+        diagp:
+          type: string
+        diftyp:
+          type: string
+        direct:
+          type: string
+        dirnb:
+          type: string
+        duplicate:
+          type: string
+        ecar:
+          type: string
+        exec:
+          type: string
+        exece:
+          type: string
+        execinfo:
+          type: string
+        execrall:
+          type: string
+        execsub:
+          type: string
+        execsuba:
+          type: string
+        execsubpre:
+          type: string
+        facc:
+          type: string
+        faction:
+          type: string
+        fblksize:
+          type: string
+        fcar:
+          type: string
+        fcharset:
+          type: string
+        fcode:
+          type: string
+        fcomp:
+          type: string
+        fdate:
+          type: string
+        fdb:
+          type: string
+        fdbcomp:
+          type: string
+        fdelete:
+          type: string
+        fdisp:
+          type: string
+        filenotfound:
+          type: string
+        files:
+          type: string
+        filter:
+          type: string
+        filtertype:
+          type: string
+        filtyp:
+          type: string
+        fkeypos:
+          type: string
+        fkeysize:
+          type: string
+        flowname:
+          type: string
+        flrecl:
+          type: string
+        fname:
+          type: string
+        fnum:
+          type: string
+        forg:
+          type: string
+        fpad:
+          type: string
+        fpath:
+          type: string
+        frec:
+          type: string
+        frecfm:
+          type: string
+        frecfmx:
+          type: string
+        froot:
+          type: string
+        fspace:
+          type: string
+        fspaces:
+          type: string
+        fstate:
+          type: string
+        fsuf:
+          type: string
+        fsyst:
+          type: string
+        ftime:
+          type: string
+        ftname:
+          type: string
+        ftype:
+          type: string
+        funit:
+          type: string
+        fver:
+          type: string
+        group:
+          type: string
+        groupid:
+          type: string
+        ida:
+          type: string
+        idappl:
+          type: string
+        idexit:
+          type: string
+        idexita:
+          type: string
+        idexite:
+          type: string
+        idexiteot:
+          type: string
+        idf:
+          type: string
+        idt:
+          type: string
+        idtu:
+          type: string
+        ipart:
+          type: string
+        iselect:
+          type: string
+        isrelay:
+          type: string
+        jobname:
+          type: string
+        lnum:
+          type: string
+        lpath:
+          type: string
+        lpath_r:
+          type: string
+        lracine:
+          type: string
+        lracine_r:
+          type: string
+        lsuffix:
+          type: string
+        lsuffix_r:
+          type: string
+        lunit:
+          type: string
+        lunit_r:
+          type: string
+        lunitc:
+          type: string
+        lunitc_r:
+          type: string
+        maction:
+          type: string
+        maxdate:
+          type: string
+        maxduration:
+          type: string
+        maxtime:
+          type: string
+        mindate:
+          type: string
+        mintime:
+          type: string
+        mkdir:
+          type: string
+        mode:
+          type: string
+        msg:
+          type: string
+        n_ackprocess:
+          type: string
+        n_ackprocess_err:
+          type: string
+        n_ackprot_pending:
+          type: string
+        n_nackprot_recv:
+          type: string
+        n_postprocess:
+          type: string
+        n_postprocess_err:
+          type: string
+        n_preprocess:
+          type: string
+        n_preprocess_err:
+          type: string
+        nblksize:
+          type: string
+        ncar:
+          type: string
+        ncharset:
+          type: string
+        nchkpt:
+          type: string
+        ncode:
+          type: string
+        ncomp:
+          type: string
+        ndays:
+          type: string
+        ndest:
+          type: string
+        netband:
+          type: string
+        nettyp:
+          type: string
+        nextdate:
+          type: string
+        nexttime:
+          type: string
+        nfname:
+          type: string
+        nfver:
+          type: string
+        nidf:
+          type: string
+        nidt:
+          type: string
+        nkeypos:
+          type: string
+        nkeysize:
+          type: string
+        nlrecl:
+          type: string
+        nodeid:
+          type: string
+        norg:
+          type: string
+        norig:
+          type: string
+        notify:
+          type: string
+        npad:
+          type: string
+        npart:
+          type: string
+        nrec:
+          type: string
+        nrecfm:
+          type: string
+        nrecfmx:
+          type: string
+        nrpart:
+          type: string
+        nrst:
+          type: string
+        nspace:
+          type: string
+        nspart:
+          type: string
+        nsyst:
+          type: string
+        ntf:
+          type: string
+        ntype:
+          type: string
+        opath:
+          type: string
+        opath_r:
+          type: string
+        opermsg:
+          type: string
+        oracine:
+          type: string
+        oracine_r:
+          type: string
+        origin:
+          type: string
+        osuffix:
+          type: string
+        osuffix_r:
+          type: string
+        ounit:
+          type: string
+        ounit_r:
+          type: string
+        ounitc:
+          type: string
+        ounitc_r:
+          type: string
+        pacing:
+          type: string
+        parm:
+          type: string
+        part:
+          type: string
+        phase:
+          type: string
+        phasestep:
+          type: string
+        pidtu:
+          type: string
+        postmindate:
+          type: string
+        postmintime:
+          type: string
+        poststate:
+          type: string
+        posttimeout:
+          type: string
+        preexec:
+          type: string
+        premindate:
+          type: string
+        premintime:
+          type: string
+        prestate:
+          type: string
+        pretimeout:
+          type: string
+        priority:
+          type: string
+        progress:
+          type: string
+        proprf:
+          type: string
+        protnum:
+          type: string
+        protocol:
+          type: string
+        protphase:
+          type: string
+        prottype:
+          type: string
+        prover:
+          type: string
+        rappl:
+          type: string
+        recoverystate:
+          type: string
+        relance:
+          type: string
+        reqgroup:
+          type: string
+        requser:
+          type: string
+        resync:
+          type: string
+        retry:
+          type: string
+        retryc:
+          type: string
+        retrym:
+          type: string
+        retryn:
+          type: string
+        retryp:
+          type: string
+        retryw:
+          type: string
+        ridtu:
+          type: string
+        rkerror:
+          type: string
+        rmsg:
+          type: string
+        rpart:
+          type: string
+        rpasswd:
+          type: string
+        rrename_count:
+          type: string
+        ruser:
+          type: string
+        sappl:
+          type: string
+        savstate:
+          type: string
+        savtypf:
+          type: string
+        selfname:
+          type: string
+        sentinel:
+          type: string
+        serial:
+          type: string
+        sfname:
+          type: string
+        sigfname:
+          type: string
+        sminfnm:
+          type: string
+        sminusr:
+          type: string
+        sourceappl:
+          type: string
+        spart:
+          type: string
+        spasswd:
+          type: string
+        ssl:
+          type: string
+        sslauth:
+          type: string
+        sslciph:
+          type: string
+        sslfnam:
+          type: string
+        sslmode:
+          type: string
+        sslparm:
+          type: string
+        sslprof:
+          type: string
+        sslrmca:
+          type: string
+        sslrmus:
+          type: string
+        ssluser:
+          type: string
+        state:
+          type: string
+        statimpl:
+          type: string
+        storageaccount:
+          type: string
+        suser:
+          type: string
+        targetappl:
+          type: string
+        tcycle:
+          type: string
+        timeb:
+          type: string
+        timed:
+          type: string
+        timee:
+          type: string
+        timek:
+          type: string
+        times:
+          type: string
+        timmaxc:
+          type: string
+        timmc:
+          type: string
+        trkr:
+          type: string
+        typcommut:
+          type: string
+        type:
+          type: string
+        typef:
+          type: string
+        userid:
+          type: string
+        workingdir:
+          type: string
+        wphases:
+          type: string
+        wphasesteps:
+          type: string
+        wstates:
+          type: string
+        wtimeout:
+          type: string
+        xlate:
+          type: string
+    TransferRequestReceiveFileBody:
+      type: object
+      properties:
+        ida:
+          type: string
+        fname:
+          type: string
+        state:
+          type: string
+          enum:
+          - DISP
+          - HOLD
+          - KEEP
+        wfname:
+          type: string
+        wstates:
+          type: string
+        wphases:
+          type: string
+        wphasesteps:
+          type: string
+        wtimeout:
+          type: integer
+        exec:
+          type: string
+        exece:
+          type: string
+        locmbx:
+          type: string
+        sync:
+          type: string
+          enum:
+          - YES
+          - NO
+        todate:
+          type: string
+        totime:
+          type: string
+        cycdate:
+          type: string
+        cyctime:
+          type: string
+        maxdate:
+          type: string
+        maxtime:
+          type: string
+        mindate:
+          type: string
+        mintime:
+          type: string
+        maxduration:
+          type: string
+        ackmindate:
+          type: string
+        ackmintime:
+          type: string
+        postmindate:
+          type: string
+        postmintime:
+          type: string
+        ackexEC:
+          type: string
+        ackstate:
+          type: string
+          enum:
+          - REQUIRE
+          - IGNORE
+        acktimeout:
+          type: string
+        appcycid:
+          type: string
+        appobjid:
+          type: string
+        comment:
+          type: string
+        cos:
+          type: string
+        dirnb:
+          type: string
+        daction:
+          type: string
+          enum:
+          - ERROR
+          - RESUME
+        execrall:
+          type: string
+          enum:
+          - ALL
+          - PARENT
+          - CHILDREN
+        exit:
+          type: string
+        facc:
+          type: string
+        faction:
+          type: string
+          enum:
+          - ERASE
+          - DELETE
+          - VERIFY
+          - CONCAT
+          - RENAME
+        fblksize:
+          type: string
+        fcharset:
+          type: string
+        fcode:
+          type: string
+          enum:
+          - ASCII
+          - EBCDIC
+          - BINARY
+        fcomp:
+          type: string
+        fdb:
+          type: string
+        fdisp:
+          type: string
+          enum:
+          - OLD
+          - NEW
+          - BOTH
+        file:
+          type: string
+          enum:
+          - FIRST
+          - ALL
+        fkeylen:
+          type: string
+        fkeypos:
+          type: string
+        flrecl:
+          type: string
+        forg:
+          type: string
+          enum:
+          - SEQ
+          - INDEXED
+          - IND
+          - DIRECT
+          - DIR
+          - PART
+          - PAR
+        fpad:
+          type: string
+        frecfm:
+          type: string
+          enum:
+          - F
+          - U
+          - V
+        fspace:
+          type: string
+        ftype:
+          type: string
+          enum:
+          - B
+          - V
+          - T
+          - O
+          - X
+          - J
+        maction:
+          type: string
+          enum:
+          - REPLACE
+        ncharset:
+          type: string
+        ncomp:
+          type: string
+        netband:
+          type: string
+        nfver:
+          type: integer
+        notify:
+          type: string
+        poststate:
+          type: string
+          enum:
+          - DISP
+        posttimeout:
+          type: string
+        pri:
+          type: string
+        rappl:
+          type: string
+        rpasswd:
+          type: string
+        ruser:
+          type: string
+        sappl:
+          type: string
+        serial:
+          type: string
+          enum:
+          - Y
+          - X
+        spasswd:
+          type: string
+        suser:
+          type: string
+        trk:
+          type: string
+          enum:
+          - UNDEFINED
+          - ALL
+          - SUMMARY
+          - NO
+        xlate:
+          type: string
+        filenotfound:
+          type: string
+          enum:
+          - ABORT
+          - IGNORE
+        cycle:
+          type: integer
+        fdate:
+          type: integer
+        ftime:
+          type: integer
+        nidf:
+          type: string
+        nfname:
+          type: string
+        parm:
+          type: string
+        prot:
+          type: string
+        tcycle:
+          type: string
+          enum:
+          - MIN
+          - DAY
+          - MONTH
+        typ:
+          type: integer
+      example:
+        fname: file to be received
+        parm: additional information about the transfer
+    TransferRequestSendFileBody:
+      type: object
+      properties:
+        ida:
+          type: string
+        fname:
+          type: string
+        state:
+          type: string
+          enum:
+          - DISP
+          - HOLD
+          - KEEP
+        wfname:
+          type: string
+        wstates:
+          type: string
+        wphases:
+          type: string
+        wphasesteps:
+          type: string
+        wtimeout:
+          type: integer
+        exec:
+          type: string
+        exece:
+          type: string
+        locmbx:
+          type: string
+        sync:
+          type: string
+          enum:
+          - YES
+          - NO
+        todate:
+          type: string
+        totime:
+          type: string
+        cycdate:
+          type: string
+        cyctime:
+          type: string
+        maxdate:
+          type: string
+        maxtime:
+          type: string
+        mindate:
+          type: string
+        mintime:
+          type: string
+        maxduration:
+          type: string
+        ackmindate:
+          type: string
+        ackmintime:
+          type: string
+        postmindate:
+          type: string
+        postmintime:
+          type: string
+        preexec:
+          type: string
+        prestate:
+          type: string
+          enum:
+          - DISP
+          - HOLD
+        pretimeout:
+          type: string
+        premindate:
+          type: string
+        premintime:
+          type: string
+        ackexec:
+          type: string
+        ackstate:
+          type: string
+          enum:
+          - REQUIRE
+          - IGNORE
+        acktimeout:
+          type: string
+        appcycid:
+          type: string
+        appobjid:
+          type: string
+        comment:
+          type: string
+        cos:
+          type: string
+        cycle:
+          type: string
+        daction:
+          type: string
+          enum:
+          - ERROR
+          - RESUME
+        execsub:
+          type: string
+          enum:
+          - LIST
+          - FILE
+          - SUBF
+        execsuba:
+          type: string
+          enum:
+          - LIST
+          - FILE
+          - SUBF
+        execsubpre:
+          type: string
+          enum:
+          - LIST
+          - FILE
+          - SUBF
+        exit:
+          type: string
+        facc:
+          type: string
+          enum:
+          - LIST
+          - FILE
+          - SUBF
+        faction:
+          type: string
+          enum:
+          - ERASE
+          - DELETE
+          - NONE
+          - ROTATE
+        fblksize:
+          type: string
+        fcharset:
+          type: string
+        fcode:
+          type: string
+          enum:
+          - ASCII
+          - EBCDIC
+          - BINARY
+        fcomp:
+          type: string
+        fdb:
+          type: string
+        fdisp:
+          type: string
+          enum:
+          - OLD
+          - SHR
+          - CHECK
+        fkeylen:
+          type: string
+        fkeypos:
+          type: string
+        flrecl:
+          type: string
+        forg:
+          type: string
+          enum:
+          - SEQ
+          - INDEXED
+          - IND
+          - DIRECT
+          - DIR
+          - PART
+          - PAR
+        fnameabs:
+          type: string
+          enum:
+          - YES
+          - NO
+        fpad:
+          type: string
+        frecfm:
+          type: string
+          enum:
+          - F
+          - V
+          - U
+        fspace:
+          type: string
+        ftype:
+          type: string
+          enum:
+          - B
+          - V
+          - T
+          - O
+          - X
+          - J
+        nblksize:
+          type: string
+        ncharset:
+          type: string
+        ncode:
+          type: string
+          enum:
+          - ASCII
+          - EBCDIC
+          - BINARY
+        ncomp:
+          type: string
+        netband:
+          type: string
+        nfname:
+          type: string
+        nkeylen:
+          type: string
+        nkeypos:
+          type: string
+        nlrecl:
+          type: string
+        notify:
+          type: string
+        npad:
+          type: string
+        nrecfm:
+          type: string
+          enum:
+          - F
+          - V
+          - U
+        nspace:
+          type: string
+        ntype:
+          type: string
+        parm:
+          type: string
+        poststate:
+          type: string
+          enum:
+          - DISP
+        posttimeout:
+          type: string
+        pri:
+          type: string
+        rappl:
+          type: string
+        rpasswd:
+          type: string
+        ruser:
+          type: string
+        sappl:
+          type: string
+        selfname:
+          type: string
+        sigfname:
+          type: string
+        serial:
+          type: string
+          enum:
+          - Y
+          - X
+        spart:
+          type: string
+        spasswd:
+          type: string
+        suser:
+          type: string
+        tcycle:
+          type: string
+          enum:
+          - MIN
+          - DAY
+          - MONTH
+        trk:
+          type: string
+          enum:
+          - UNDEFINED
+          - ALL
+          - SUMMARY
+          - NO
+        xlate:
+          type: string
+        filenotfound:
+          type: string
+          enum:
+          - ABORT
+          - IGNORE
+        fdate:
+          type: integer
+        ftime:
+          type: integer
+        ipart:
+          type: string
+        nidf:
+          type: string
+        prot:
+          type: string
+        typ:
+          type: integer
+      example:
+        fname: file to be sent
+        parm: additional information about the transfer
+    TransferRequestSendMessageBody:
+      required:
+      - msg
+      type: object
+      properties:
+        ida:
+          type: string
+        msg:
+          type: string
+        state:
+          type: string
+          enum:
+          - DISP
+          - HOLD
+          - KEEP
+        exec:
+          type: string
+        exece:
+          type: string
+        locmbx:
+          type: string
+        sync:
+          type: string
+          enum:
+          - YES
+          - NO
+        todate:
+          type: string
+        totime:
+          type: string
+        cycdate:
+          type: integer
+        cyctime:
+          type: integer
+        maxdate:
+          type: string
+        maxtime:
+          type: string
+        mindate:
+          type: string
+        mintime:
+          type: string
+        maxduration:
+          type: integer
+        appcycid:
+          type: string
+        appobjid:
+          type: string
+        ipart:
+          type: string
+        pri:
+          type: integer
+        prot:
+          type: string
+        rappl:
+          type: string
+        ruser:
+          type: string
+        sappl:
+          type: string
+        spart:
+          type: string
+        suser:
+          type: string
+        tcycle:
+          type: string
+          enum:
+          - MIN
+          - DAY
+          - MONTH
+        trk:
+          type: string
+          enum:
+          - UNDEFINED
+          - ALL
+          - SUMMARY
+          - NO
+        cycle:
+          type: integer
+        typ:
+          type: integer
+      example:
+        msg: Sample of Message data
+    TransferRequestSendReplyBody:
+      required:
+      - msg
+      type: object
+      properties:
+        ida:
+          type: string
+        msg:
+          type: string
+        state:
+          type: string
+          enum:
+          - DISP
+          - HOLD
+          - KEEP
+        exec:
+          type: string
+        exece:
+          type: string
+        locmbx:
+          type: string
+        sync:
+          type: string
+          enum:
+          - YES
+          - NO
+        todate:
+          type: string
+        totime:
+          type: string
+        cycdate:
+          type: integer
+        cyctime:
+          type: integer
+        maxdate:
+          type: string
+        maxtime:
+          type: string
+        mindate:
+          type: string
+        mintime:
+          type: string
+        maxduration:
+          type: integer
+        appcycid:
+          type: string
+        appobjid:
+          type: string
+        ipart:
+          type: string
+        pri:
+          type: integer
+        prot:
+          type: string
+        rappl:
+          type: string
+        ruser:
+          type: string
+        sappl:
+          type: string
+        spart:
+          type: string
+        suser:
+          type: string
+        tcycle:
+          type: string
+          enum:
+          - MIN
+          - DAY
+          - MONTH
+        trk:
+          type: string
+          enum:
+          - UNDEFINED
+          - ALL
+          - SUMMARY
+          - NO
+        typ:
+          type: integer
+      example:
+        msg: Validate the Transfer
+    TransferRequestSendNackBody:
+      required:
+      - msg
+      type: object
+      properties:
+        ida:
+          type: string
+        msg:
+          type: string
+        state:
+          type: string
+          enum:
+          - DISP
+          - HOLD
+          - KEEP
+        exec:
+          type: string
+        exece:
+          type: string
+        locmbx:
+          type: string
+        sync:
+          type: string
+          enum:
+          - YES
+          - NO
+        todate:
+          type: string
+        totime:
+          type: string
+        cycdate:
+          type: integer
+        cyctime:
+          type: integer
+        maxdate:
+          type: string
+        maxtime:
+          type: string
+        mindate:
+          type: string
+        mintime:
+          type: string
+        maxduration:
+          type: integer
+        appcycid:
+          type: string
+        appobjid:
+          type: string
+        ipart:
+          type: string
+        pri:
+          type: integer
+        prot:
+          type: string
+        rappl:
+          type: string
+        ruser:
+          type: string
+        sappl:
+          type: string
+        spart:
+          type: string
+        suser:
+          type: string
+        tcycle:
+          type: string
+          enum:
+          - MIN
+          - DAY
+          - MONTH
+        trk:
+          type: string
+          enum:
+          - UNDEFINED
+          - ALL
+          - SUMMARY
+          - NO
+        diag:
+          type: integer
+        typ:
+          type: integer
+      example:
+        msg: Invalidate the transfer
+        diag: 8
+    TransferRequestEndBody:
+      type: object
+      properties:
+        diagc:
+          type: string
+        fname:
+          type: string
+        nfname:
+          type: string
+        sigfname:
+          type: string
+        rappl:
+          type: string
+        sappl:
+          type: string
+        ruser:
+          type: string
+        suser:
+          type: string
+        rpasswd:
+          type: string
+        spasswd:
+          type: string
+        istate:
+          type: string
+          enum:
+          - NO
+          - YES
+        phase:
+          type: string
+        phasestep:
+          type: string
+        appstate:
+          type: string
+      example:
+        diagc: Move the transfer in status X
+  parameters:
+    idtu:
+      name: idtu
+      in: path
+      description: Unique transfer identifier.
+      required: true
+      schema:
+        maxLength: 8
+        minLength: 8
+        pattern: '[A-Z][0-9]{7}'
+        type: string
+    id:
+      name: id
+      in: path
+      description: object id
+      required: true
+      schema:
+        maxLength: 64
+        minLength: 1
+        pattern: '[A-Z][0-9]{63}'
+        type: string
+    offsetParam:
+      name: offset
+      in: query
+      description: Number of objects to skip.
+      schema:
+        type: integer
+        default: 0
+    limitParam:
+      name: limit
+      in: query
+      description: Maximum number of objects to return.
+      schema:
+        type: integer
+        default: 100
+  securitySchemes:
+    basicAuth:
+      type: http
+      description: HTTP Basic Authentication.
+      scheme: basic
